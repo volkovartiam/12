@@ -1,85 +1,68 @@
-import java.awt.Image;
 import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SpaceShip {
+public class SpaceShip extends Sprite {
 
-    private int dx;
+    private int dx;								// на эту величину будет смещаться корабль при нажатии кнопок
     private int dy;
-    private int x = 20;
-    private int y = 0;
-    private int w;
-    private int h;
-    private Image image;
+    private List<Missile> missiles;				// лист связный список для отображения n-го количества ракет
 
-    public SpaceShip() {
-
-        loadImage();
+    public SpaceShip(int x, int y) {			// также для установки начального положения корабля
+        super(x, y);
+        
+        initSpaceShip();
     }
 
-    private void loadImage() {
+    private void initSpaceShip() {
+
+        missiles = new ArrayList<>();			// автоматически увеличивающийся массив (что происходит с ним когда ракеты становятся не видны)
         
-        ImageIcon ii = new ImageIcon("src/star.png");
-        image = ii.getImage(); 
-        
-        w = image.getWidth(null);
-        h = image.getHeight(null);
+        loadImage("src/craft.png"); 			// загрузка изображения корабля и его параметров
+        getImageDimensions();					//
     }
 
-    public void move() {
-        
+    public void move() {						// для движения ракеты метод
         x += dx;
         y += dy;
     }
 
-    public int getX() {
-        
-        return x;
+    public List<Missile> getMissiles() {		// геттер возращает список всех ракет
+        return missiles;
     }
 
-    public int getY() {
-        
-        return y;
-    }
-    
-    public int getWidth() {
-        
-        return w;
-    }
-    
-    public int getHeight() {
-        
-        return h;
-    }    
-
-    public Image getImage() {
-        
-        return image;
-    }
-
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {		// метод определяет нажатие кнопки и устанавливает соответственные приращения
 
         int key = e.getKeyCode();
 
+        if (key == KeyEvent.VK_SPACE) {			// при нажатии пробела вызывается метод fire
+            fire();
+        }
+
         if (key == KeyEvent.VK_LEFT) {
-            dx = -2;
+            dx = -1;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
-            dx = 2;
+            dx = 1;
         }
 
         if (key == KeyEvent.VK_UP) {
-            dy = -2;
+            dy = -1;
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            dy = +2;
+            dy = 1;
         }
     }
 
-    public void keyReleased(KeyEvent e) {
-        
+    public void fire() {
+        missiles.add(new Missile(x + width, y + height / 2));		// в лист ракет добавляется новая ракета 
+    }																// появляется с правого края корабля x + width
+    																//                           по середине y + height / 2
+
+    public void keyReleased(KeyEvent e) {							// для того чтобы корабль стоял на месте при отсутствия 
+    																// один из 3-х типов клавиатурных событий pressed / released / typed из класса KeyEvent
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {
