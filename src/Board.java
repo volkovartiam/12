@@ -12,11 +12,11 @@ import javax.swing.Timer;
 
 public class Board extends JPanel implements ActionListener {
 
-    private final int ICRAFT_X = 40;
-    private final int ICRAFT_Y = 60;
-    private final int DELAY = 10;
-    private Timer timer;
-    private SpaceShip spaceShip;
+    private final int ICRAFT_X = 40;				// начальные координыты корабл€
+    private final int ICRAFT_Y = 60;				//
+    private final int DELAY = 20;					// задержка ????
+    private Timer timer;							// 
+    private SpaceShip spaceShip;					// создаетс€ экземпл€р  класса Spaceship
 
     public Board() {
 
@@ -25,35 +25,36 @@ public class Board extends JPanel implements ActionListener {
 
     private void initBoard() {
 
-        addKeyListener(new TAdapter());
+        addKeyListener(new TAdapter());			// подключаетс€ слушатель
+        
         setBackground(Color.BLACK);
-        setFocusable(true);
+        setFocusable(/*false*/true);             // event обрабаываетс€ только елсли есть фокус              
 
-        spaceShip = new SpaceShip(ICRAFT_X, ICRAFT_Y);
+        spaceShip = new SpaceShip(ICRAFT_X, ICRAFT_Y);		// передаютс€ начальные координаты 
 
-        timer = new Timer(DELAY, this);
-        timer.start();
+        timer = new Timer(DELAY, this);			// дл€ задержки
+        timer.start();							
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    @Override										//
+    public void paintComponent(Graphics g) {		// прорисовка всего
+        super.paintComponent(g);					//
 
-        doDrawing(g);
+        doDrawing(g);								// 
 
-        Toolkit.getDefaultToolkit().sync();
+        Toolkit.getDefaultToolkit().sync();			// ???
     }
 
     private void doDrawing(Graphics g) {
 
         Graphics2D g2d = (Graphics2D) g;
         
-        g2d.drawImage(spaceShip.getImage(), spaceShip.getX(),
+        g2d.drawImage(spaceShip.getImage(), spaceShip.getX(),		// дл€ прорисовки корабл€
                 spaceShip.getY(), this);
 
-        List<Missile> missiles = spaceShip.getMissiles();
+        List<Missile> missiles = spaceShip.getMissiles();			// хран€тс€ данные о ракетах
 
-        for (Missile missile : missiles) {
+        for (Missile missile : missiles) {							
             
             g2d.drawImage(missile.getImage(), missile.getX(),
                     missile.getY(), this);
@@ -73,15 +74,15 @@ public class Board extends JPanel implements ActionListener {
 
         List<Missile> missiles = spaceShip.getMissiles();
 
-        for (int i = 0; i < missiles.size(); i++) {
+        for (int i = 0; i < missiles.size(); i++) {			// пока в массиве missle есть ракеты
 
-            Missile missile = missiles.get(i);
+            Missile missile = missiles.get(i);				// возвращеает элемент с определенным номером 
 
-            if (missile.isVisible()) {
+            if (missile.isVisible()) {						// и если видима, то
 
-                missile.move();
-            } else {
-
+                missile.move();                             // сдвигает
+            } else {										
+            		
                 missiles.remove(i);
             }
         }
