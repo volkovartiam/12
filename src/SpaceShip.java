@@ -4,38 +4,46 @@ import java.util.List;
 
 public class SpaceShip extends Sprite {
 
-    private int dx;								// на эту величину будет смещаться корабль при нажатии кнопок
+    private int dx;
     private int dy;
-    private List<Missile> missiles;				// лист связный список для отображения n-го количества ракет
+    private List<Missile> missiles;
 
-    public SpaceShip(int x, int y) {			// также для установки начального положения корабля
+    public SpaceShip(int x, int y) {
         super(x, y);
-        
-        initSpaceShip();
+
+        initCraft();
     }
 
-    private void initSpaceShip() {
-
-        missiles = new ArrayList<>();			// автоматически увеличивающийся массив (что происходит с ним когда ракеты становятся не видны)
+    private void initCraft() {
         
-        loadImage("src/craft.png"); 			// загрузка изображения корабля и его параметров
-        getImageDimensions();					//
+        missiles = new ArrayList<>();
+        loadImage("src/craft.png");
+        getImageDimensions();
     }
 
-    public void move() {						// для движения ракеты метод
+    public void move() {
+
         x += dx;
         y += dy;
+
+        if (x < 1) {
+            x = 1;
+        }
+
+        if (y < 1) {
+            y = 1;
+        }
     }
 
-    public List<Missile> getMissiles() {		// геттер возращает список всех ракет
+    public List<Missile> getMissiles() {
         return missiles;
     }
 
-    public void keyPressed(KeyEvent e) {		// метод определяет нажатие кнопки и устанавливает соответственные приращения
+    public void keyPressed(KeyEvent e) {
 
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_SPACE) {			// при нажатии пробела вызывается метод fire
+        if (key == KeyEvent.VK_SPACE) {
             fire();
         }
 
@@ -57,12 +65,11 @@ public class SpaceShip extends Sprite {
     }
 
     public void fire() {
-        missiles.add(new Missile(x + width, y + height / 2));		// в лист ракет добавляется новая ракета 
-    }																// появляется с правого края корабля x + width
-    																//                           по середине y + height / 2
+        missiles.add(new Missile(x + width, y + height / 2));
+    }
 
-    public void keyReleased(KeyEvent e) {							// для того чтобы корабль стоял на месте при отсутствия 
-    																// один из 3-х типов клавиатурных событий pressed / released / typed из класса KeyEvent
+    public void keyReleased(KeyEvent e) {
+
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {

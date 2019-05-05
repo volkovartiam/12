@@ -1,29 +1,29 @@
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 
-public class MovingSpriteEx extends JFrame {
+public class CollisionEx extends JFrame {
 
-    public MovingSpriteEx() {
+    public CollisionEx() {
         
         initUI();
     }
     
     private void initUI() {
-
-        add(new Board());
-
-        setTitle("Moving sprite");
-        setSize(500, 400);
         
-        setLocationRelativeTo(null);
+        add(new Board());
+        
         setResizable(false);
+        pack();
+        
+        setTitle("Collision");
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public static void main(String[] args) {
-
+        
         EventQueue.invokeLater(() -> {
-            MovingSpriteEx ex = new MovingSpriteEx();
+            CollisionEx ex = new CollisionEx();
             ex.setVisible(true);
         });
     }
